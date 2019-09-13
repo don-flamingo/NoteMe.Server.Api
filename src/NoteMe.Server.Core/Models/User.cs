@@ -4,17 +4,17 @@ using NoteMe.Server.Core.Providers;
 
 namespace NoteMe.Server.Core.Models
 {
-    public class Note : IIdProvider, 
+    public class User : IIdProvider, 
+        IStatusProvider, 
         INameProvider, 
         ICreatedAtProvider, 
-        IStatusProvider
+        IModifiedAtProvider
     {
         public Guid Id { get; set; }
         public StatusEnum Status { get; set; }
         public string Name { get; set; }
-        public string Content { get; set; }
+        public string Email { get; set; }
         public DateTime CreatedAt { get; set; }
-        public decimal Latitude { get; set; }
-        public decimal Longitude { get; set; }
+        public DateTime ModifiedAt { get; set; }
     }
 }
