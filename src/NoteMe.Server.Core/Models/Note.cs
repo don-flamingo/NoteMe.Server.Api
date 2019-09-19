@@ -1,6 +1,7 @@
 using System;
+using System.Collections.Generic;
 using NoteMe.Common.DataTypes.Enums;
-using NoteMe.Server.Core.Providers;
+using NoteMe.Common.DataTypes.Providers;
 
 namespace NoteMe.Server.Core.Models
 {
@@ -16,5 +17,14 @@ namespace NoteMe.Server.Core.Models
         public DateTime CreatedAt { get; set; }
         public decimal Latitude { get; set; }
         public decimal Longitude { get; set; }
+        
+        public Guid ActualNoteId { get; set; }
+        public Guid UserId { get; set; }
+        
+        public User User { get; set; }
+        public Note ActualNote { get; set; }
+        
+        public ICollection<Attachment> Attachments { get; set; } = new HashSet<Attachment>();
+        public ICollection<Note> OldNotes { get; set; } = new HashSet<Note>();
     }
 }

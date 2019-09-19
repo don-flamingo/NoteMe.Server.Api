@@ -1,10 +1,10 @@
 using System;
 using NoteMe.Common.DataTypes.Enums;
-using NoteMe.Server.Core.Providers;
+using NoteMe.Common.DataTypes.Providers;
 
 namespace NoteMe.Server.Core.Models
 {
-    public class Theme : IIdProvider,
+    public class Template : IIdProvider,
         IStatusProvider,
         INameProvider,
         ICreatedAtProvider
@@ -14,5 +14,9 @@ namespace NoteMe.Server.Core.Models
         public string Name { get; set; }
         public string Content { get; set; }
         public DateTime CreatedAt { get; set; }
+        
+        public Guid UserId { get; set; }
+        
+        public User User { get; set; }
     }
 }

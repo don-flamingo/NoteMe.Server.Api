@@ -1,6 +1,6 @@
 using System;
 using NoteMe.Common.DataTypes.Enums;
-using NoteMe.Server.Core.Providers;
+using NoteMe.Common.DataTypes.Providers;
 
 namespace NoteMe.Server.Core.Models
 {
@@ -12,5 +12,8 @@ namespace NoteMe.Server.Core.Models
         public StatusEnum Status { get; set; }
         public string Name { get; set; }
         public AttachmentTypeEnum Type { get; set; }
+        
+        public Guid NoteId { get; set; }
+        public Note Note { get; set; }
     }
 }
