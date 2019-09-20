@@ -18,6 +18,8 @@ namespace NoteMe.Server.Infrastructure.IoC
         {
             builder.RegisterInstance(_configuration.GetSettings<SqlSettings>())
                 .SingleInstance();
+            builder.RegisterInstance(_configuration.GetSettings<JwtSettings>())
+                .SingleInstance();
         }
     }
 }
