@@ -14,6 +14,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoteMe.Common.DataTypes", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoteMe.Common", "..\NoteMe.Common\src\NoteMe.Common\NoteMe.Common.csproj", "{E267A927-7DB4-4937-8019-10124383FC31}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoteMe.Common.Generators", "..\NoteMe.Common\src\NoteMe.Common.Generators\NoteMe.Common.Generators.csproj", "{D03D344C-DFA0-4B36-A203-D08742FC15E0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{2F43745A-482A-4816-8B72-A0074E313EAB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -44,8 +48,15 @@ Global
 		{E267A927-7DB4-4937-8019-10124383FC31}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E267A927-7DB4-4937-8019-10124383FC31}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E267A927-7DB4-4937-8019-10124383FC31}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D03D344C-DFA0-4B36-A203-D08742FC15E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D03D344C-DFA0-4B36-A203-D08742FC15E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D03D344C-DFA0-4B36-A203-D08742FC15E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D03D344C-DFA0-4B36-A203-D08742FC15E0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{1E681D8D-C38E-4CA6-AB2A-8ACE62A77C91} = {196CB14F-E003-4D17-A2E4-7FE027A02078}
+		{E267A927-7DB4-4937-8019-10124383FC31} = {2F43745A-482A-4816-8B72-A0074E313EAB}
+		{29091CF8-1341-4242-BA50-F8436D770427} = {2F43745A-482A-4816-8B72-A0074E313EAB}
+		{D03D344C-DFA0-4B36-A203-D08742FC15E0} = {2F43745A-482A-4816-8B72-A0074E313EAB}
 	EndGlobalSection
 EndGlobal

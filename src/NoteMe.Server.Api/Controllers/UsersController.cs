@@ -1,7 +1,10 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using NoteMe.Common.Commands;
+using NoteMe.Common.DataTypes;
+using NoteMe.Common.Dtos;
 using NoteMe.Server.Infrastructure.Commands;
+using NoteMe.Server.Infrastructure.Cqrs.Commands.Common;
 using NoteMe.Server.Infrastructure.Services;
 
 namespace NoteMe.Server.Api.Controllers
@@ -13,7 +16,7 @@ namespace NoteMe.Server.Api.Controllers
         public UsersController(
             IMemoryCacheService memoryCacheService,
             ICommandDispatcher commandDispatcher) 
-            : base(commandDispatcher)
+            : base(memoryCacheService, commandDispatcher)
         {
             _memoryCacheService = memoryCacheService;
         }
@@ -22,7 +25,8 @@ namespace NoteMe.Server.Api.Controllers
         public async Task<IActionResult> RegisterAsync([FromBody] UserRegisterCommand command)
         {
             await DispatchAsync(command);
-            return Ok();
+            var created = GetDto<UserDto>(command.Id);
+            return Created(Endpoints.Users, created);
         }
 
         [HttpPost("login")]

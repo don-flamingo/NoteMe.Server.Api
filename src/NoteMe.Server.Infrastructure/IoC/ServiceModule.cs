@@ -15,8 +15,8 @@ namespace NoteMe.Server.Infrastructure.IoC
                 .AsImplementedInterfaces()
                 .InstancePerLifetimeScope();
 
-            builder.RegisterType<IMemoryCacheService>()
-                .As<MemoryCacheService>()
+            builder.RegisterType<MemoryCacheService>()
+                .As<IMemoryCacheService>()
                 .SingleInstance();
         }
     }

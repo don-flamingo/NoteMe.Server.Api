@@ -4,4 +4,37 @@
         <TargetFramework>netcoreapp2.2</TargetFramework>
     </PropertyGroup>
 
+    <ItemGroup>
+        <PackageReference Include="xunit" Version="2.4.1" />
+        <PackageReference Include="FluentAssertions" Version="5.6.0" />
+        <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="2.2.0" />
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.9.0" />
+        <PackageReference Include="Microsoft.NETCore.TestHost" Version="2.0.8" />
+        <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
+        <PackageReference Include="System.ValueTuple" Version="4.5.0" />
+        <PackageReference Include="xunit" Version="2.4.1" />
+        <PackageReference Include="xunit.categories" Version="2.0.4" />
+        <PackageReference Include="xunit.runner.visualstudio" Version="2.4.1">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+        </PackageReference>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\..\NoteMe.Common\src\NoteMe.Common.Generators\NoteMe.Common.Generators.csproj" />
+      <ProjectReference Include="..\..\..\NoteMe.Common\src\NoteMe.Common\NoteMe.Common.csproj" />
+      <ProjectReference Include="..\..\src\NoteMe.Server.Api\NoteMe.Server.Api.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="..\..\src\NoteMe.Server.Api\appsettings.Development.json">
+        <Link>appsettings.Development.json</Link>
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <Content Include="..\..\src\NoteMe.Server.Api\appsettings.json">
+        <Link>appsettings.json</Link>
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+    </ItemGroup>
+
 </Project>

@@ -18,6 +18,7 @@ namespace NoteMe.Server.Infrastructure.IoC
             builder.RegisterModule(new SettingsModule(_configuration));
             builder.RegisterModule(new CqrsModule());
             builder.RegisterModule(new MapperModule());
+            builder.RegisterModule(new ServiceModule());
         }
     }
 }

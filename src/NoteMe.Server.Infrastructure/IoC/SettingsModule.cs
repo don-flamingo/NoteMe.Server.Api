@@ -20,6 +20,8 @@ namespace NoteMe.Server.Infrastructure.IoC
                 .SingleInstance();
             builder.RegisterInstance(_configuration.GetSettings<JwtSettings>())
                 .SingleInstance();
+            builder.RegisterInstance(_configuration.GetSettings<CacheSettings>())
+                .SingleInstance();
         }
     }
 }

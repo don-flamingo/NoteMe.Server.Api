@@ -1,9 +1,10 @@
 using System;
 using System.Threading.Tasks;
 using Autofac;
+using NoteMe.Server.Infrastructure.Commands;
 using NoteMe.Server.Infrastructure.Sql;
 
-namespace NoteMe.Server.Infrastructure.Commands
+namespace NoteMe.Server.Infrastructure.Cqrs.Commands.Common
 {
     public interface ICommandDispatcher 
     {
@@ -13,10 +14,10 @@ namespace NoteMe.Server.Infrastructure.Commands
     public class CommandDispatcher : ICommandDispatcher
     {
         private readonly NoteMeContext _context;
-        private readonly IContainer _container;
+        private readonly IComponentContext _container;
 
         public CommandDispatcher(NoteMeContext context,
-            IContainer container)
+            IComponentContext container)
         {
             _context = context;
             _container = container;
@@ -29,10 +30,10 @@ namespace NoteMe.Server.Infrastructure.Commands
                 try
                 {
                     var handler = _container.Resolve<ICommandHandler<TCommand>>();
-
                     await handler.HandleAsync(command);
 
                     transaction.Commit();
+                    await _context.SaveChangesAsync();
                 }
                 catch (Exception ex)
                 {

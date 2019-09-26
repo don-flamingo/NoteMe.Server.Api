@@ -40,8 +40,8 @@ namespace E.Lab.Server.Infrastructure.IoC.Modules
                 .As<IMapper>()
                 .InstancePerLifetimeScope();
 
-            builder.RegisterType<INoteMeMapper>()
-                .As<NoteMeMapper>()
+            builder.RegisterType<NoteMeMapper>()
+                .As<INoteMeMapper>()
                 .SingleInstance();
         }
     }

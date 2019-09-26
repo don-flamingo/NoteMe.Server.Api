@@ -19,6 +19,12 @@ namespace NoteMe.Server.Infrastructure.Sql
             _settings = settings;
         }
         
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseNpgsql(_settings.ConnectionString)
+                .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+        }
+        
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
