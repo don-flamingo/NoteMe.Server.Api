@@ -8,4 +8,8 @@
       <ProjectReference Include="..\..\..\NoteMe.Common\src\NoteMe.Common.DataTypes\NoteMe.Common.DataTypes.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Models" />
+    </ItemGroup>
+
 </Project>

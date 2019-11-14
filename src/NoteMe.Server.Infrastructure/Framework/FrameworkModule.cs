@@ -1,15 +1,15 @@
 using System.Reflection;
 using Autofac;
 using AutoMapper;
-using NoteMe.Server.Infrastructure.Mappers;
+using NoteMe.Server.Infrastructure.Framework.Mappers;
 
-namespace E.Lab.Server.Infrastructure.IoC.Modules
+namespace NoteMe.Server.Infrastructure.Framework
 {
-    public class MapperModule : Autofac.Module
+    public class FrameworkModule : Autofac.Module
     {
         protected override void Load(ContainerBuilder builder)
         {
-            var assembly = typeof(MapperModule)
+            var assembly = typeof(FrameworkModule)
                 .GetTypeInfo()
                 .Assembly;
             

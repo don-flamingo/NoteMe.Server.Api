@@ -1,8 +1,8 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using NoteMe.Common.Commands;
 using NoteMe.Common.DataTypes;
-using NoteMe.Common.Dtos;
+using NoteMe.Common.Domain.Users.Commands;
+using NoteMe.Common.Domain.Users.Dto;
 using NoteMe.Server.Infrastructure.Commands;
 using NoteMe.Server.Infrastructure.Cqrs.Commands.Common;
 using NoteMe.Server.Infrastructure.Services;

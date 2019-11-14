@@ -1,7 +1,6 @@
-using System.Diagnostics;
 using AutoMapper;
 
-namespace NoteMe.Server.Infrastructure.Mappers
+namespace NoteMe.Server.Infrastructure.Framework.Mappers
 {
     public interface INoteMeMapper
     {

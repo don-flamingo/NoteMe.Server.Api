@@ -3,7 +3,7 @@ using Autofac;
 using NoteMe.Server.Infrastructure.Commands;
 using NoteMe.Server.Infrastructure.Cqrs.Commands.Common;
 
-namespace NoteMe.Server.Infrastructure.IoC
+namespace NoteMe.Server.Infrastructure.Cqrs
 {
     public class CqrsModule : Autofac.Module
     {

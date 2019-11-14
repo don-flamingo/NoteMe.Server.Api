@@ -1,9 +1,9 @@
 using AutoMapper;
-using NoteMe.Common.Commands;
-using NoteMe.Common.Dtos;
+using NoteMe.Common.Domain.Users.Commands;
+using NoteMe.Common.Domain.Users.Dto;
 using NoteMe.Server.Core.Models;
 
-namespace NoteMe.Server.Infrastructure.Mappers
+namespace NoteMe.Server.Infrastructure.Framework.Mappers
 {
     public static class AutoMapperConfiguration 
     {

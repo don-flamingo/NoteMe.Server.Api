@@ -1,6 +1,6 @@
 using System;
 using NoteMe.Common.DataTypes.Enums;
-using NoteMe.Common.DataTypes.Providers;
+using NoteMe.Common.Providers;
 
 namespace NoteMe.Server.Core.Models
 {

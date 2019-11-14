@@ -5,7 +5,7 @@ using System.Security.Claims;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using NLog;
-using NoteMe.Common.Dtos;
+using NoteMe.Common.Domain.Users.Dto;
 using NoteMe.Common.Extensions;
 using NoteMe.Server.Infrastructure.Services.Common;
 using NoteMe.Server.Infrastructure.Settings;

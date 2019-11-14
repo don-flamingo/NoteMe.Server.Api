@@ -1,8 +1,8 @@
 using System;
 using System.Reflection;
 using Microsoft.Extensions.Caching.Memory;
-using NoteMe.Common.DataTypes.Providers;
-using NoteMe.Common.Dtos;
+using NoteMe.Common.Domain.Users.Dto;
+using NoteMe.Common.Providers;
 using NoteMe.Server.Infrastructure.Services.Common;
 using NoteMe.Server.Infrastructure.Settings;
 

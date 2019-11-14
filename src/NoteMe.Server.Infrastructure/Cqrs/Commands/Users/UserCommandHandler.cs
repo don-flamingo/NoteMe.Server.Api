@@ -1,12 +1,12 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using NoteMe.Common.Commands;
-using NoteMe.Common.Dtos;
+using NoteMe.Common.Domain.Users.Commands;
+using NoteMe.Common.Domain.Users.Dto;
 using NoteMe.Common.Exceptions;
 using NoteMe.Server.Core.Models;
 using NoteMe.Server.Infrastructure.Commands;
-using NoteMe.Server.Infrastructure.Mappers;
+using NoteMe.Server.Infrastructure.Framework.Mappers;
 using NoteMe.Server.Infrastructure.Services;
 using NoteMe.Server.Infrastructure.Sql;
 

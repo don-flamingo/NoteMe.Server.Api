@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using NoteMe.Common.DataTypes.Providers;
+using NoteMe.Common.Providers;
 using NoteMe.Server.Infrastructure.Commands;
 using NoteMe.Server.Infrastructure.Cqrs.Commands.Common;
 using NoteMe.Server.Infrastructure.Services;

@@ -1,6 +1,7 @@
 using Autofac;
-using E.Lab.Server.Infrastructure.IoC.Modules;
 using Microsoft.Extensions.Configuration;
+using NoteMe.Server.Infrastructure.Cqrs;
+using NoteMe.Server.Infrastructure.Framework;
 
 namespace NoteMe.Server.Infrastructure.IoC
 {
@@ -15,10 +16,8 @@ namespace NoteMe.Server.Infrastructure.IoC
 
         protected override void Load(ContainerBuilder builder)
         {
-            builder.RegisterModule(new SettingsModule(_configuration));
             builder.RegisterModule(new CqrsModule());
-            builder.RegisterModule(new MapperModule());
-            builder.RegisterModule(new ServiceModule());
+            builder.RegisterModule(new FrameworkModule());
         }
     }
 }
