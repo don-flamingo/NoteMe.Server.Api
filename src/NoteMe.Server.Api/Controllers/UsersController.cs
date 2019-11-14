@@ -3,20 +3,21 @@ using Microsoft.AspNetCore.Mvc;
 using NoteMe.Common.DataTypes;
 using NoteMe.Common.Domain.Users.Commands;
 using NoteMe.Common.Domain.Users.Dto;
-using NoteMe.Server.Infrastructure.Commands;
-using NoteMe.Server.Infrastructure.Cqrs.Commands.Common;
+using NoteMe.Server.Infrastructure.Cqrs.Commands;
+using NoteMe.Server.Infrastructure.Cqrs.Queries;
 using NoteMe.Server.Infrastructure.Services;
 
 namespace NoteMe.Server.Api.Controllers
 {
-    public class UsersController : ControllerBase
+    public class UsersNoteMeController : NoteMeControllerBase
     {
         private readonly IMemoryCacheService _memoryCacheService;
 
-        public UsersController(
+        public UsersNoteMeController(
+            IQueryDispatcher queryDispatcher,
             IMemoryCacheService memoryCacheService,
             ICommandDispatcher commandDispatcher) 
-            : base(memoryCacheService, commandDispatcher)
+            : base(queryDispatcher, memoryCacheService, commandDispatcher)
         {
             _memoryCacheService = memoryCacheService;
         }
@@ -34,7 +35,7 @@ namespace NoteMe.Server.Api.Controllers
         {
             await DispatchAsync(command);
             var jwt = _memoryCacheService.GetJwt(command.Id);
-            return Json(jwt);
+            return Ok(jwt);
         }
     }
 }

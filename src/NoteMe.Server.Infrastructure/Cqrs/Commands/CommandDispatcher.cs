@@ -1,14 +1,15 @@
 using System;
 using System.Threading.Tasks;
 using Autofac;
-using NoteMe.Server.Infrastructure.Commands;
+using NoteMe.Common.Providers;
 using NoteMe.Server.Infrastructure.Sql;
 
-namespace NoteMe.Server.Infrastructure.Cqrs.Commands.Common
+namespace NoteMe.Server.Infrastructure.Cqrs.Commands
 {
-    public interface ICommandDispatcher 
+    public interface ICommandDispatcher
     {
-        Task DispatchAsync<TCommand>(TCommand command);
+        Task DispatchAsync<TCommand>(TCommand command)
+            where TCommand : ICommandProvider;
     }
     
     public class CommandDispatcher : ICommandDispatcher
@@ -24,6 +25,7 @@ namespace NoteMe.Server.Infrastructure.Cqrs.Commands.Common
         }
         
         public async Task DispatchAsync<TCommand>(TCommand command)
+            where TCommand : ICommandProvider
         {
             using (var transaction = await _context.Database.BeginTransactionAsync())
             {

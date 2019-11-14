@@ -1,11 +1,15 @@
 ﻿using System;
+using System.Text;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 using NoteMe.Server.Api.Middlewares;
+using NoteMe.Server.Infrastructure.Framework.Security;
 using NoteMe.Server.Infrastructure.IoC;
 
 namespace NoteMe.Server.Api
@@ -14,6 +18,7 @@ namespace NoteMe.Server.Api
     {
         public IConfiguration Configuration { get; }
         public ILifetimeScope Container { get; private set; }
+        public SecuritySettings SecuritySettings { get; private set; }
         
         public Startup(IHostingEnvironment env)
         {
@@ -35,22 +40,36 @@ namespace NoteMe.Server.Api
         }
         
         // This method gets called by the runtime. Use this method to add services to the container.
-        public IServiceProvider ConfigureServices(IServiceCollection services)
+        public void ConfigureServices(IServiceCollection services)
         {
+            services.AddControllers();
             services.AddTransient<ExceptionMiddleware>();
-            
-            return CreateAutofacContainer(services);
-        }
-        
+            services.AddSignalR();
+            services.AddAuthentication(options =>
+                {
+                    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                })
+                .AddJwtBearer(x =>
+                {
+                    if (SecuritySettings == null)
+                    {
+                        SecuritySettings = Container.Resolve<SecuritySettings>();
+                    }
 
-        private IServiceProvider CreateAutofacContainer(IServiceCollection services)
-        {
-            var builder = new ContainerBuilder();
-            builder.Populate(services);
-            builder.RegisterModule(new MainModule(Configuration));
-            Container = builder.Build();
+                    var key = Encoding.ASCII.GetBytes(SecuritySettings.Key);
 
-            return new AutofacServiceProvider(Container);
+                    x.RequireHttpsMetadata = false;
+                    x.SaveToken = true;
+                    x.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(key),
+                        ValidateIssuer = false,
+                        ValidateAudience = false
+                    };
+                });
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)

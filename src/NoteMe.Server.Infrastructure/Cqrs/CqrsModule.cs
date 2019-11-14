@@ -1,7 +1,6 @@
 using System.Reflection;
 using Autofac;
-using NoteMe.Server.Infrastructure.Commands;
-using NoteMe.Server.Infrastructure.Cqrs.Commands.Common;
+using NoteMe.Server.Infrastructure.Cqrs.Commands;
 
 namespace NoteMe.Server.Infrastructure.Cqrs
 {

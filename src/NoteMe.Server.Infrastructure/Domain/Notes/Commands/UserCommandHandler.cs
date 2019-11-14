@@ -1,16 +1,15 @@
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using NoteMe.Common.Domain.Users.Commands;
 using NoteMe.Common.Domain.Users.Dto;
 using NoteMe.Common.Exceptions;
 using NoteMe.Server.Core.Models;
-using NoteMe.Server.Infrastructure.Commands;
+using NoteMe.Server.Infrastructure.Cqrs.Commands;
 using NoteMe.Server.Infrastructure.Framework.Mappers;
 using NoteMe.Server.Infrastructure.Services;
 using NoteMe.Server.Infrastructure.Sql;
 
-namespace NoteMe.Server.Infrastructure.Cqrs.Commands
+namespace NoteMe.Server.Infrastructure.Domain.Notes.Commands
 {
     public class UserCommandHandler : ICommandHandler<UserRegisterCommand>
     {
