@@ -1,5 +1,6 @@
 using System;
 using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 using FluentAssertions;
 using NoteMe.Common.DataTypes;
@@ -36,7 +37,7 @@ namespace NoteMe.Server.Tests.Integration.Controllers
                 Password = _usersGenerator.GetPassword()
             };
 
-            await _backendFixture.PostAsync(Endpoints.Users, cmd, HttpStatusCode.Created);
+            await _backendFixture.SendAsync<object>(HttpMethod.Post, Endpoints.Users, cmd);
         }
         
         [Fact]
@@ -49,7 +50,7 @@ namespace NoteMe.Server.Tests.Integration.Controllers
                 Password = _usersGenerator.GetPassword()
             };
 
-            await _backendFixture.PostAsync(Endpoints.Users, cmd, HttpStatusCode.Created);
+            await _backendFixture.SendAsync<object>(HttpMethod.Post, Endpoints.Users, cmd);
 
             var login = new LoginCommand
             {
@@ -58,7 +59,7 @@ namespace NoteMe.Server.Tests.Integration.Controllers
                 Email = cmd.Email
             };
             
-            var jwt = await _backendFixture.PostAsync<JwtDto>(Endpoints.Login, login);
+            var jwt = await _backendFixture.SendAsync<JwtDto>(HttpMethod.Post, Endpoints.Login, cmd);
 
             jwt.User.Email.Should().Be(cmd.Email);
             jwt.User.Id.Should().Be(cmd.Id);

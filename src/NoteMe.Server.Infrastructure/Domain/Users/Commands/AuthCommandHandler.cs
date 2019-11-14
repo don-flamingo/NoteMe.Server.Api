@@ -4,30 +4,28 @@ using NoteMe.Common.Domain.Users.Commands;
 using NoteMe.Common.Domain.Users.Dto;
 using NoteMe.Common.Exceptions;
 using NoteMe.Server.Infrastructure.Cqrs.Commands;
+using NoteMe.Server.Infrastructure.Framework.Cache;
 using NoteMe.Server.Infrastructure.Framework.Mappers;
-using NoteMe.Server.Infrastructure.Services;
+using NoteMe.Server.Infrastructure.Framework.Security;
 using NoteMe.Server.Infrastructure.Sql;
 
-namespace NoteMe.Server.Infrastructure.Domain.Notes.Commands
+namespace NoteMe.Server.Infrastructure.Domain.Users.Commands
 {
     public class AuthCommandHandler : ICommandHandler<LoginCommand>
     {
-        private readonly IMemoryCacheService _memoryCacheService;
-        private readonly IJwtService _jwtService;
-        private readonly IEncrypterService _encrypterService;
+        private readonly ISecurityService _securityService;
+        private readonly ICacheService _cacheService;
         private readonly INoteMeMapper _mapper;
         private readonly NoteMeContext _context;
 
         public AuthCommandHandler(
-            IMemoryCacheService memoryCacheService,
-            IJwtService jwtService,
-            IEncrypterService encrypterService,
+            ISecurityService securityService,
+            ICacheService cacheService,
             INoteMeMapper mapper,
             NoteMeContext context)
         {
-            _memoryCacheService = memoryCacheService;
-            _jwtService = jwtService;
-            _encrypterService = encrypterService;
+            _securityService = securityService;
+            _cacheService = cacheService;
             _mapper = mapper;
             _context = context;
         }
@@ -40,16 +38,16 @@ namespace NoteMe.Server.Infrastructure.Domain.Notes.Commands
                 throw new ServerException(ErrorCodes.InvalidCredentials);
             }
 
-            var hash = _encrypterService.GetHash(command.Password, user.Salt);
+            var hash = _securityService.GetHash(command.Password, user.Salt);
             if (hash != user.Hash)
             {
                 throw new ServerException(ErrorCodes.InvalidCredentials);
             }
 
             var dto = _mapper.Map<UserDto>(user);
-            var jwt = _jwtService.CreateToken(dto);
+            var jwt = _securityService.GetJwt(dto, command.Id);
 
-            _memoryCacheService.SetJwt(command.Id, jwt);
+            _cacheService.Set(jwt);
         }
     }
 }

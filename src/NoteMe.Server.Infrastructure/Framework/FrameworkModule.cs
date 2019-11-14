@@ -40,6 +40,10 @@ namespace NoteMe.Server.Infrastructure.Framework
                 .As<ICacheService>()
                 .SingleInstance();
 
+            builder.RegisterType<SecurityService>()
+                .As<ISecurityService>()
+                .SingleInstance();
+
             var cacheSettings = _configuration.GetSettings<CacheSettings>();
             var securitySettings = _configuration.GetSettings<SecuritySettings>();
 

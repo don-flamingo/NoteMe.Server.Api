@@ -1,6 +1,7 @@
 using System.Reflection;
 using Autofac;
 using NoteMe.Server.Infrastructure.Cqrs.Commands;
+using NoteMe.Server.Infrastructure.Cqrs.Queries;
 
 namespace NoteMe.Server.Infrastructure.Cqrs
 {
@@ -18,6 +19,14 @@ namespace NoteMe.Server.Infrastructure.Cqrs
 
             builder.RegisterType<CommandDispatcher>()
                 .As<ICommandDispatcher>()
+                .InstancePerLifetimeScope();
+            
+            builder.RegisterAssemblyTypes(assembly)
+                .AsClosedTypesOf(typeof(IQueryHandler<,>))
+                .InstancePerLifetimeScope();
+
+            builder.RegisterType<QueryDispatcher>()
+                .As<IQueryDispatcher>()
                 .InstancePerLifetimeScope();
         }
     }

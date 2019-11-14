@@ -14,7 +14,7 @@ namespace NoteMe.Server.Infrastructure.Framework.Security
     {
         string GetSalt();
         string GetHash(string value, string salt);
-        JwtDto GetJwt(UserDto user);
+        JwtDto GetJwt(UserDto user, Guid id);
     }
     
     public class SecurityService : ISecurityService
@@ -48,7 +48,7 @@ namespace NoteMe.Server.Infrastructure.Framework.Security
             return bytes;
         }
 
-        public JwtDto GetJwt(UserDto user)
+        public JwtDto GetJwt(UserDto user, Guid id)
         {
             var now = DateTime.UtcNow;
             var key = Encoding.ASCII.GetBytes(_securitySettings.Key);
@@ -73,6 +73,7 @@ namespace NoteMe.Server.Infrastructure.Framework.Security
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return new JwtDto
             {
+                Id = id,
                 User = user,
                 Token = tokenHandler.WriteToken(token),
                 Expires = expiresAt

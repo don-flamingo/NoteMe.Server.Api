@@ -20,23 +20,9 @@ namespace NoteMe.Server.Api
         public ILifetimeScope Container { get; private set; }
         public SecuritySettings SecuritySettings { get; private set; }
         
-        public Startup(IHostingEnvironment env)
+        public Startup(IConfiguration configuration)
         {
-#if FRONTEND
-            env.EnvironmentName = "Frontend";
-#endif
-            
-#if RELEASE
-            env.EnvironmentName = "Production";
-#endif
-
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(env.ContentRootPath)
-                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
-                .AddEnvironmentVariables();
-
-            Configuration = builder.Build();
+            Configuration = configuration;
         }
         
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -44,7 +30,6 @@ namespace NoteMe.Server.Api
         {
             services.AddControllers();
             services.AddTransient<ExceptionMiddleware>();
-            services.AddSignalR();
             services.AddAuthentication(options =>
                 {
                     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -71,7 +56,12 @@ namespace NoteMe.Server.Api
                     };
                 });
         }
-
+        
+        public void ConfigureContainer(ContainerBuilder builder)
+        {
+            builder.RegisterModule(new MainModule(Configuration));
+        }
+        
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.IsDevelopment())

@@ -5,22 +5,23 @@ using NoteMe.Common.Domain.Users.Dto;
 using NoteMe.Common.Exceptions;
 using NoteMe.Server.Core.Models;
 using NoteMe.Server.Infrastructure.Cqrs.Commands;
+using NoteMe.Server.Infrastructure.Framework.Cache;
 using NoteMe.Server.Infrastructure.Framework.Mappers;
-using NoteMe.Server.Infrastructure.Services;
+using NoteMe.Server.Infrastructure.Framework.Security;
 using NoteMe.Server.Infrastructure.Sql;
 
-namespace NoteMe.Server.Infrastructure.Domain.Notes.Commands
+namespace NoteMe.Server.Infrastructure.Domain.Users.Commands
 {
     public class UserCommandHandler : ICommandHandler<UserRegisterCommand>
     {
-        private readonly IMemoryCacheService _memoryCacheService;
-        private readonly IEncrypterService _encrypterService;
+        private readonly ICacheService _memoryCacheService;
+        private readonly ISecurityService _encrypterService;
         private readonly INoteMeMapper _mapper;
         private readonly NoteMeContext _context;
 
         public UserCommandHandler(
-            IMemoryCacheService memoryCacheService,
-            IEncrypterService encrypterService,
+            ICacheService memoryCacheService,
+            ISecurityService encrypterService,
             INoteMeMapper mapper,
             NoteMeContext context)
         {
@@ -40,13 +41,13 @@ namespace NoteMe.Server.Infrastructure.Domain.Notes.Commands
                 throw new ServerException(ErrorCodes.UserAlreadyExists);
             }
 
-            user.Salt = _encrypterService.GetSalt(command.Email);
+            user.Salt = _encrypterService.GetSalt();
             user.Hash = _encrypterService.GetHash(command.Password, user.Salt);
 
             await _context.AddAsync(user);
             
             var created = _mapper.Map<UserDto>(user);
-            _memoryCacheService.SetDto(created);
+            _memoryCacheService.Set(created);
 
         } 
     }

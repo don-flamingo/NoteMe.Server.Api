@@ -5,7 +5,7 @@ using NoteMe.Common.Exceptions;
 using NoteMe.Common.Providers;
 using NoteMe.Server.Infrastructure.Cqrs.Commands;
 using NoteMe.Server.Infrastructure.Cqrs.Queries;
-using NoteMe.Server.Infrastructure.Services;
+using NoteMe.Server.Infrastructure.Framework.Cache;
 
 namespace NoteMe.Server.Api.Controllers
 {
@@ -13,7 +13,7 @@ namespace NoteMe.Server.Api.Controllers
     public abstract class NoteMeControllerBase : ControllerBase
     {
         private readonly IQueryDispatcher _queryDispatcher;
-        private readonly IMemoryCacheService _memoryCacheService;
+        private readonly ICacheService _memoryCacheService;
         private readonly ICommandDispatcher _commandDispatcher;
 
         protected Guid UserId => User?.Identity?.IsAuthenticated == true
@@ -22,7 +22,7 @@ namespace NoteMe.Server.Api.Controllers
 
         protected NoteMeControllerBase(
             IQueryDispatcher queryDispatcher,
-            IMemoryCacheService memoryCacheService,
+            ICacheService memoryCacheService,
             ICommandDispatcher commandDispatcher)
         {
             _queryDispatcher = queryDispatcher;
@@ -63,6 +63,6 @@ namespace NoteMe.Server.Api.Controllers
 
         protected TDto GetDto<TDto>(Guid id)
             where TDto : IDtoProvider, IIdProvider
-            => _memoryCacheService.GetDto<TDto>(id);
+            => _memoryCacheService.Get<TDto>(id);
     }
 }

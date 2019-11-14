@@ -1,12 +1,10 @@
 using System;
-using System.Collections.Generic;
-using System.Net;
 using System.Net.Http;
-using System.Net.Http.Headers;
+using System.Text;
 using System.Threading.Tasks;
+using Autofac.Extensions.DependencyInjection;
 using FluentAssertions;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.TestHost;
+using Microsoft.AspNetCore.Mvc.Testing;
 using NoteMe.Common.Domain.Users.Commands;
 using NoteMe.Common.Domain.Users.Dto;
 using NoteMe.Common.Extensions;
@@ -17,122 +15,57 @@ namespace NoteMe.Server.Tests.Integration.Fixtures
 {
     public class BackendFixture
     {
-        private readonly HttpClient _client;
-        private readonly TestServer _testServer;
-
-        public JwtDto Jwt { get; private set; }
+        public HttpClient Client { get; }
+        private WebApplicationFactory<Startup> _webApplicationFactory;
+        private string _bearerFormat = "Bearer {0}";
+        private string _token;
 
         public BackendFixture()
         {
-            _testServer = new TestServer(new WebHostBuilder()
-                .UseStartup<Startup>()
-                .UseEnvironment("Development"));
+            _webApplicationFactory = new WebApplicationFactory<Startup>()
+                .WithWebHostBuilder(webHost =>
+                {
+                    webHost.ConfigureServices(x => x.AddAutofac());
+                });
 
-            _client = _testServer.CreateClient();
+            Client = _webApplicationFactory.CreateClient();
         }
 
-        public Task LoginAsAdmin()
-            => LoginToApi("Administrator@gmail.com", "admin123");
-
-        public async Task LoginToApi(string login, string password)
+        public async Task LoginAsync(string username, string password)
         {
-            var command = new LoginCommand()
+            var loginCmd = new LoginCommand()
             {
-                Email = login,
+                Id = Guid.NewGuid(),
+                Email = username,
                 Password = password
             };
 
-            Jwt = await PostAsync<JwtDto>("/api/login", command);
-            _client.DefaultRequestHeaders.Authorization
-                = new AuthenticationHeaderValue("Bearer", Jwt.Token);
+            var jwt = await SendAsync<JwtDto>(HttpMethod.Post, "api/users/login", loginCmd);
+            _token = jwt.Token;
         }
 
-        public async Task FailLoginToApi(string login, string password)
+        public async Task<TResponse> SendAsync<TResponse>(HttpMethod method, string url, object body = null)
         {
-            var command = new LoginCommand()
+            var request = new HttpRequestMessage();
+            request.Method = method;
+            request.RequestUri = new Uri(Client.BaseAddress, url);
+
+            if (!_token.IsEmpty())
             {
-                Email = login,
-                Password = password
-            };
+                Client.DefaultRequestHeaders.Add("Authorization", "Bearer " + _token);
+            }
 
-            Jwt = await PostAsync<JwtDto>("/api/login", command, HttpStatusCode.Unauthorized);
-        }
+            if (body != null)
+            {
+                var json = JsonSerializeService.Serialize(body);
+                request.Content = new StringContent(json, Encoding.UTF8, "application/json");
+            }
 
-        public async Task<TModel> GetAsync<TModel>(string url, HttpStatusCode expectedCode = HttpStatusCode.OK)
-        {
-            var response = await GetAsync(url, expectedCode);
+            var httpResponseMessage = await Client.SendAsync(request);
+            var responseString = await httpResponseMessage.Content.ReadAsStringAsync();
+            httpResponseMessage.IsSuccessStatusCode.Should().BeTrue(responseString);
 
-            var json = await response.Content.ReadAsStringAsync();
-            return DeserializeObject<TModel>(json);
-        }
-
-        public async Task<HttpResponseMessage> GetAsync(string url, HttpStatusCode expectedCode = HttpStatusCode.OK)
-        {
-            var response = await _client.GetAsync(url);
-            response.StatusCode.Should().Be(expectedCode, await response.Content.ReadAsStringAsync());
-            return response;
-        }
-
-        public async Task<TModel> PostAsync<TModel>(string url, object command,
-            HttpStatusCode expectedCode = HttpStatusCode.OK)
-        {
-            var response = await PostAsync(url, command, expectedCode);
-            var json = await response.Content.ReadAsStringAsync();
-            return DeserializeObject<TModel>(json);
-        }
-
-        public async Task<HttpResponseMessage> PostAsync(string url, object command,
-            HttpStatusCode expectedCode = HttpStatusCode.OK)
-        {
-            var payload = GetPayload(command);
-            var response = await _client.PostAsync(url, payload);
-            response.StatusCode.Should().Be(expectedCode, await response.Content.ReadAsStringAsync());
-
-            return response;
-        }
-
-        public async Task<TModel> PutAsync<TModel>(string url, object command,
-            HttpStatusCode expectedCode = HttpStatusCode.OK)
-        {
-            var response = await PutAsync(url, command, expectedCode);
-
-            var json = await response.Content.ReadAsStringAsync();
-            return DeserializeObject<TModel>(json);
-        }
-
-        public async Task<HttpResponseMessage> PutAsync(string url, object command,
-            HttpStatusCode expectedCode = HttpStatusCode.OK)
-        {
-            var payload = GetPayload(command);
-            var response = await _client.PutAsync(url, payload);
-            response.StatusCode.Should().Be(expectedCode);
-
-            return response;
-        }
-
-        public async Task<TModel> PatchAsync<TModel>(string url, object command,
-            HttpStatusCode expectedCode = HttpStatusCode.OK)
-        {
-            var response = await PatchAsync(url, command, expectedCode);
-            var json = await response.Content.ReadAsStringAsync();
-            return DeserializeObject<TModel>(json);
-        }
-
-        public async Task<HttpResponseMessage> PatchAsync(string url, object command,
-            HttpStatusCode expectedCode = HttpStatusCode.OK)
-        {
-            var payload = GetPayload(command);
-            var response = await _client.PatchAsync(url, payload);
-            response.StatusCode.Should().Be(expectedCode);
-
-            return response;
-        }
-
-        public async Task DeleteAsync(string url,
-            HttpStatusCode expectedCode = HttpStatusCode.OK)
-        {
-            var response = await _client.DeleteAsync(url);
-            response.StatusCode.Should().Be(expectedCode);
+            return JsonSerializeService.Deserialize<TResponse>(responseString);
         }
 
         private static StringContent GetPayload(object data)

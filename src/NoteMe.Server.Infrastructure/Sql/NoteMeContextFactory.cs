@@ -23,10 +23,7 @@ namespace NoteMe.Server.Infrastructure.Sql
         
         public NoteMeContext CreateDbContext(string[] args)
         {
-            var builder = new DbContextOptionsBuilder<NoteMeContext>()
-                .UseNpgsql(_settings.ConnectionString);
-            
-            return new NoteMeContext(builder.Options, _settings);
+            return new NoteMeContext(_settings);
         }
     }
 }

@@ -25,10 +25,9 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="Domain\Notes\Commands" />
       <Folder Include="Domain\Notes\Queries" />
-      <Folder Include="Domain\Users\Commands" />
       <Folder Include="Domain\Users\Queries" />
-      <Folder Include="Sql\Migrations" />
     </ItemGroup>
 
 </Project>

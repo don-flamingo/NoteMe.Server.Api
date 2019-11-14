@@ -14,7 +14,7 @@ namespace NoteMe.Server.Infrastructure.Sql
         public DbSet<Template> Templates { get; set; }
         public DbSet<Note> Notes { get; set; }
 
-        public NoteMeContext(DbContextOptions<NoteMeContext> options, SqlSettings settings) : base(options)
+        public NoteMeContext(SqlSettings settings) 
         {
             _settings = settings;
         }
