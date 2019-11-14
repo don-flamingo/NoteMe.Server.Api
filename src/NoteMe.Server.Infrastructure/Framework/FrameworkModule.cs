@@ -1,47 +1,54 @@
 using System.Reflection;
 using Autofac;
 using AutoMapper;
+using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Configuration;
+using NoteMe.Server.Infrastructure.Extenions;
+using NoteMe.Server.Infrastructure.Framework.Cache;
 using NoteMe.Server.Infrastructure.Framework.Mappers;
+using NoteMe.Server.Infrastructure.Framework.Security;
 
 namespace NoteMe.Server.Infrastructure.Framework
 {
     public class FrameworkModule : Autofac.Module
     {
+        private readonly IConfiguration _configuration;
+
+        public FrameworkModule(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
+        
         protected override void Load(ContainerBuilder builder)
         {
-            var assembly = typeof(FrameworkModule)
-                .GetTypeInfo()
-                .Assembly;
-            
-            var openTypes = new[]
-            {
-                typeof(IValueResolver<,,>),
-                typeof(IMemberValueResolver<,,,>),
-                typeof(ITypeConverter<,>),
-                typeof(IValueConverter<,>),
-                typeof(IMappingAction<,>)
-            };
+            var mapperConfiguration = AutoMapperConfiguration.GetConfiguration();
+            var mapper = mapperConfiguration.CreateMapper();
 
-            foreach (var openType in openTypes)
-            {
-                builder.RegisterAssemblyTypes(assembly)
-                    .AsClosedTypesOf(openType)
-                    .InstancePerLifetimeScope();
-            }
-            
-            builder.Register(
-                    ctx =>
-                    {
-                        var scope = ctx.Resolve<ILifetimeScope>();
-                        return new Mapper(
-                            AutoMapperConfiguration.GetConfiguration(),
-                            scope.Resolve);
-                    })
+            builder.RegisterInstance(mapper)
                 .As<IMapper>()
-                .InstancePerLifetimeScope();
+                .SingleInstance();
 
             builder.RegisterType<NoteMeMapper>()
                 .As<INoteMeMapper>()
+                .SingleInstance();
+
+            builder.RegisterType<MemoryCache>()
+                .As<IMemoryCache>()
+                .SingleInstance();
+
+            builder.RegisterType<CacheService>()
+                .As<ICacheService>()
+                .SingleInstance();
+
+            var cacheSettings = _configuration.GetSettings<CacheSettings>();
+            var securitySettings = _configuration.GetSettings<SecuritySettings>();
+
+            builder.RegisterInstance(cacheSettings)
+                .AsSelf()
+                .SingleInstance();
+
+            builder.RegisterInstance(securitySettings)
+                .AsSelf()
                 .SingleInstance();
         }
     }

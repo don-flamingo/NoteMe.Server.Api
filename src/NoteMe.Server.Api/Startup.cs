@@ -1,30 +1,19 @@
 ﻿using System;
-using System.Text;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
-using Microsoft.AspNet.OData.Extensions;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.IdentityModel.Tokens;
-using Newtonsoft.Json;
-using NoteMe.Common.Services.Json;
-using NoteMe.Server.Api.Extensions;
 using NoteMe.Server.Api.Middlewares;
 using NoteMe.Server.Infrastructure.IoC;
-using NoteMe.Server.Infrastructure.Settings;
-using NoteMe.Server.Infrastructure.Sql;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace NoteMe.Server.Api
 {
     public class Startup
     {
         public IConfiguration Configuration { get; }
-        public IContainer Container { get; private set; }
+        public ILifetimeScope Container { get; private set; }
         
         public Startup(IHostingEnvironment env)
         {
@@ -50,19 +39,6 @@ namespace NoteMe.Server.Api
         {
             services.AddTransient<ExceptionMiddleware>();
             
-            services.AddMemoryCache()
-                .AddMvc()
-                .AddJsonOptions(x => x.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore)
-                .AddJsonOptions(x => x.SerializerSettings.Formatting = Formatting.Indented)
-                .AddJsonOptions(x => x.SerializerSettings.ContractResolver = JsonSerializeService.CamelCaseContractResolver)
-                .AddJsonOptions(x => x.SerializerSettings.TypeNameHandling = TypeNameHandling.None)
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-
-            services.AddEntityFrameworkNpgsql()
-                .AddDbContext<NoteMeContext>()
-                .AddJwt(Container)
-                .AddOData();
-
             return CreateAutofacContainer(services);
         }
         
@@ -83,18 +59,19 @@ namespace NoteMe.Server.Api
             {
                 app.UseDeveloperExceptionPage();
             }
-            else
-            {
-                app.UseHsts();
-            }
 
-            app.UseHttpsRedirection()
-                .UseMiddleware<ExceptionMiddleware>()
-                .UseMvc(routerBuilder =>
-                {
-                    routerBuilder.EnableDependencyInjection();
-                    routerBuilder.Expand().Select().Count().OrderBy().Filter();
-                });
+            Container = app.ApplicationServices.GetAutofacRoot();
+            
+            app.UseRouting();
+            app.UseAuthentication();
+            app.UseAuthorization();
+
+            app.UseMiddleware<ExceptionMiddleware>();
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
         }
     }
 }

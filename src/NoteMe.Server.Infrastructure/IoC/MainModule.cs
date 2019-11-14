@@ -17,7 +17,7 @@ namespace NoteMe.Server.Infrastructure.IoC
         protected override void Load(ContainerBuilder builder)
         {
             builder.RegisterModule(new CqrsModule());
-            builder.RegisterModule(new FrameworkModule());
+            builder.RegisterModule(new FrameworkModule(_configuration));
         }
     }
 }
