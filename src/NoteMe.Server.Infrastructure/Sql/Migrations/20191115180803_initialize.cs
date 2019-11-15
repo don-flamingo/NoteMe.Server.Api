@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace NoteMe.Server.Infrastructure.Sql.Migrations
 {
-    public partial class Initialize : Migration
+    public partial class initialize : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -36,7 +36,7 @@ namespace NoteMe.Server.Infrastructure.Sql.Migrations
                     CreatedAt = table.Column<DateTime>(nullable: false),
                     Latitude = table.Column<decimal>(nullable: false),
                     Longitude = table.Column<decimal>(nullable: false),
-                    ActualNoteId = table.Column<Guid>(nullable: false),
+                    ActualNoteId = table.Column<Guid>(nullable: true),
                     UserId = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
@@ -47,7 +47,7 @@ namespace NoteMe.Server.Infrastructure.Sql.Migrations
                         column: x => x.ActualNoteId,
                         principalTable: "Notes",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Notes_Users_UserId",
                         column: x => x.UserId,

@@ -26,6 +26,7 @@
 
     <ItemGroup>
       <Folder Include="Domain\Users\Queries" />
+      <Folder Include="Sql\Migrations" />
     </ItemGroup>
 
 </Project>

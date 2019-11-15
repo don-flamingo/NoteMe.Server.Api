@@ -28,6 +28,10 @@ namespace NoteMe.Server.Infrastructure.Cqrs
             builder.RegisterType<QueryDispatcher>()
                 .As<IQueryDispatcher>()
                 .InstancePerLifetimeScope();
+
+            builder.RegisterType<GenericCommandHandler>()
+                .As<IGenericCommandHandler>()
+                .InstancePerLifetimeScope();
         }
     }
 }

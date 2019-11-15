@@ -14,30 +14,28 @@ namespace NoteMe.Server.Infrastructure.Domain.Notes.Commands
 {
     public class NoteCommandHandler : 
         ICommandHandler<CreateNoteCommand>, 
-        ICommandHandler<UpdateNoteCommand>
+        ICommandHandler<UpdateNoteCommand>,
+        ICommandHandler<DeleteNoteCommand>
     {
+        private readonly IGenericCommandHandler _genericCommandHandler;
         private readonly ICacheService _cacheService;
         private readonly INoteMeMapper _mapper;
         private readonly NoteMeContext _noteMeContext;
 
         public NoteCommandHandler(
+            IGenericCommandHandler genericCommandHandler,
             ICacheService cacheService,
             INoteMeMapper mapper,
             NoteMeContext noteMeContext)
         {
+            _genericCommandHandler = genericCommandHandler;
             _cacheService = cacheService;
             _mapper = mapper;
             _noteMeContext = noteMeContext;
         }
-        
-        public async Task HandleAsync(CreateNoteCommand command)
-        {
-            var note = _mapper.Map<Note>(command);
-            await _noteMeContext.AddAsync(note);
 
-            var noteDto = _mapper.Map<NoteDto>(note);
-            _cacheService.Set(noteDto);
-        }
+        public Task HandleAsync(CreateNoteCommand command)
+            => _genericCommandHandler.CreateAsync<CreateNoteCommand, Note, NoteDto>(command);
 
         public async Task HandleAsync(UpdateNoteCommand command)
         {
@@ -65,5 +63,8 @@ namespace NoteMe.Server.Infrastructure.Domain.Notes.Commands
             var noteDto = _mapper.Map<NoteDto>(existingNote);
             _cacheService.Set(noteDto);
         }
+
+        public Task HandleAsync(DeleteNoteCommand command)
+            => _genericCommandHandler.DeleteAsync<NoteDto>(command.Id);
     }
 }

@@ -5,6 +5,7 @@ using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using NoteMe.Server.Infrastructure.Extenions;
 using NoteMe.Server.Infrastructure.Framework.Cache;
+using NoteMe.Server.Infrastructure.Framework.Generators;
 using NoteMe.Server.Infrastructure.Framework.Mappers;
 using NoteMe.Server.Infrastructure.Framework.Security;
 
@@ -54,6 +55,14 @@ namespace NoteMe.Server.Infrastructure.Framework
             builder.RegisterInstance(securitySettings)
                 .AsSelf()
                 .SingleInstance();
+
+            builder.RegisterType<DataSeeder>()
+                .As<IDataSeeder>()
+                .InstancePerDependency();
+
+            builder.RegisterAssemblyTypes(typeof(FrameworkModule).Assembly)
+                .AsClosedTypesOf(typeof(IDataSeeder<>))
+                .InstancePerDependency();
         }
     }
 }

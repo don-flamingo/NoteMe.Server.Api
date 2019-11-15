@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text;
+using System.Threading.Tasks;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -9,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using NoteMe.Server.Api.Middlewares;
+using NoteMe.Server.Infrastructure.Framework.Generators;
 using NoteMe.Server.Infrastructure.Framework.Security;
 using NoteMe.Server.Infrastructure.IoC;
 
@@ -81,6 +83,14 @@ namespace NoteMe.Server.Api
             {
                 endpoints.MapControllers();
             });
+
+            SeedDataAsync().Wait();
+        }
+
+        private Task SeedDataAsync()
+        {
+            var seeder = Container.Resolve<IDataSeeder>();
+            return seeder.SeedAsync();
         }
     }
 }

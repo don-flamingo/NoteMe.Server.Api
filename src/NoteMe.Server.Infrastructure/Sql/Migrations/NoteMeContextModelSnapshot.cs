@@ -50,7 +50,7 @@ namespace NoteMe.Server.Infrastructure.Sql.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("ActualNoteId")
+                    b.Property<Guid?>("ActualNoteId")
                         .HasColumnType("uuid");
 
                     b.Property<string>("Content")
@@ -156,9 +156,7 @@ namespace NoteMe.Server.Infrastructure.Sql.Migrations
                 {
                     b.HasOne("NoteMe.Server.Core.Models.Note", "ActualNote")
                         .WithMany("OldNotes")
-                        .HasForeignKey("ActualNoteId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ActualNoteId");
 
                     b.HasOne("NoteMe.Server.Core.Models.User", "User")
                         .WithMany("Notes")
