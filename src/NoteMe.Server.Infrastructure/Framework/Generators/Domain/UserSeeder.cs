@@ -9,9 +9,9 @@ namespace NoteMe.Server.Infrastructure.Framework.Generators.Domain
     {
         public static Guid TestId = new Guid("e6ca1655-b16c-4ef6-afa0-2d4a71e8912c");
         public static string TestEmail = "test@gmail.com";
-        public static string TestPassword = "admin123";
-        public static string TestHash = "pQB04yfF5cJBcjhTU4oj4dOAiugMgxp/0D0Ia8eZP/va+XYlbpokzw==";
-        public static string TestSalt = "QxcOcrocA+Ah4nI7KYx88kT5hCdJFLMWYljedF6FXqpkOzzmqk8Xsg==";
+        public static string TestPassword = "password123";
+        public static string TestHash = "TDglSwUNZiGZH2deov7ZpujrEBR6r4eJRVE32coSoPK+BTfPwuLBvA==";
+        public static string TestSalt = "A35FAaBqaS5LThc3ZNIBNXHcVTiJlUAAHViLWzCtBXkXbKDfrwFUmg==";
         
         public static Guid TestNote1Id = new Guid("ec626ae0-7dca-4e71-95f5-12ea3a07db65");
         public static Guid TestNote2Id = new Guid("390a55b8-8ddb-4061-b041-9ee88a940d18");

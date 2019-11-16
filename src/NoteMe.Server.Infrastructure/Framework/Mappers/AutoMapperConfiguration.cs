@@ -11,13 +11,7 @@ namespace NoteMe.Server.Infrastructure.Framework.Mappers
         {
             return new MapperConfiguration(cfg =>
             {
-                cfg.CreateMap<UserRegisterCommand, User>()
-                    .PreserveReferences()
-                    .ReverseMap();
-
-                cfg.CreateMap<User, UserDto>()
-                    .PreserveReferences()
-                    .ReverseMap();
+                cfg.AddMaps(typeof(AutoMapperConfiguration).Assembly);
             });
         }
     }

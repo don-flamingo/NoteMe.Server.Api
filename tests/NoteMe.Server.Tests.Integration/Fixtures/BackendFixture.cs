@@ -49,9 +49,12 @@ namespace NoteMe.Server.Tests.Integration.Fixtures
             var request = new HttpRequestMessage();
             request.Method = method;
             request.RequestUri = new Uri(Client.BaseAddress, url);
+            
+            var hasToken = Client.DefaultRequestHeaders.Contains("Authorization");
 
             if (!_token.IsEmpty())
             {
+                Client.DefaultRequestHeaders.Remove("Authorization");
                 Client.DefaultRequestHeaders.Add("Authorization", "Bearer " + _token);
             }
 

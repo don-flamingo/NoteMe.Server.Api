@@ -44,6 +44,20 @@ namespace NoteMe.Server.Infrastructure.Sql
             return base.Add(entity);
         }
 
+        public override EntityEntry<TEntity> Add<TEntity>(TEntity entity)
+        {
+            BeforeSave(entity);
+            
+            return base.Add(entity);
+        }
+
+        public override ValueTask<EntityEntry<TEntity>> AddAsync<TEntity>(TEntity entity, CancellationToken cancellationToken = new CancellationToken())
+        {
+            BeforeSave(entity);
+            
+            return base.AddAsync(entity, cancellationToken);
+        }
+
         public override ValueTask<EntityEntry> AddAsync(object entity, CancellationToken cancellationToken = new CancellationToken())
         {
             BeforeSave(entity);
