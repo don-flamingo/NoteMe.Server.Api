@@ -10,7 +10,7 @@ using NoteMe.Server.Core.Models;
 using NoteMe.Server.Infrastructure.Cqrs.Queries;
 using NoteMe.Server.Infrastructure.Framework.Mappers;
 using NoteMe.Server.Infrastructure.Sql;
-using NPag.Extensions;
+using N.Pag.Extensions;
 
 namespace NoteMe.Server.Infrastructure.Domain.Notes.Queries
 {

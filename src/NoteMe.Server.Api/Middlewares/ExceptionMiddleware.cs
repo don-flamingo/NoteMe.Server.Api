@@ -42,7 +42,7 @@ namespace NoteMe.Server.Api.Middlewares
                     break;
             }
 
-            var response = new
+            var response = new ErrorDto
             {
                 ErrorCode = errorCode,
                 Details = details,

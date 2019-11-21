@@ -32,7 +32,7 @@ namespace NoteMe.Server.Infrastructure.Domain.Users.Commands
         
         public async Task HandleAsync(LoginCommand command)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(x => x.Email == command.Email);
+            var user = await _context.Users.FirstOrDefaultAsync(x => x.Email.ToLower() == command.Email.ToLower());
             if (user == null)
             {
                 throw new ServerException(ErrorCodes.InvalidCredentials);

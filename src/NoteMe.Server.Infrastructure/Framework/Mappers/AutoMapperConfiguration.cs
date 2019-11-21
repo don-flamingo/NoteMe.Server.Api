@@ -1,4 +1,5 @@
 using AutoMapper;
+using NoteMe.Common.Domain.Pagination;
 using NoteMe.Common.Domain.Users.Commands;
 using NoteMe.Common.Domain.Users.Dto;
 using NoteMe.Server.Core.Models;
@@ -12,6 +13,8 @@ namespace NoteMe.Server.Infrastructure.Framework.Mappers
             return new MapperConfiguration(cfg =>
             {
                 cfg.AddMaps(typeof(AutoMapperConfiguration).Assembly);
+
+                cfg.CreateMap(typeof(PaginationDto<>), typeof(PaginationDto<>));
             });
         }
     }
