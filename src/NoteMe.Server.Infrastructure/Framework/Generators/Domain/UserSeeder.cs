@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using NoteMe.Common.DataTypes.Enums;
 using NoteMe.Server.Core.Models;
 
 namespace NoteMe.Server.Infrastructure.Framework.Generators.Domain
@@ -48,6 +49,7 @@ namespace NoteMe.Server.Infrastructure.Framework.Generators.Domain
                             Longitude = WarsawLng,
                             CreatedAt = DateTime.UtcNow,
                             UserId = TestId,
+                            Status = StatusEnum.Normal
                         },
                         new Note
                         {
@@ -59,6 +61,7 @@ namespace NoteMe.Server.Infrastructure.Framework.Generators.Domain
                             Longitude = WarsawLng,
                             CreatedAt = DateTime.UtcNow,
                             UserId = TestId,
+                            Status = StatusEnum.Normal
                         },
                         new Note
                         {
@@ -83,6 +86,7 @@ namespace NoteMe.Server.Infrastructure.Framework.Generators.Domain
                                     CreatedAt = DateTime.UtcNow - TimeSpan.FromDays(1),
                                     UserId = TestId,
                                     ActualNoteId = TestNote3Id,
+                                    Status = StatusEnum.Historical
                                 },
                                 new Note
                                 {
@@ -95,6 +99,7 @@ namespace NoteMe.Server.Infrastructure.Framework.Generators.Domain
                                     CreatedAt = DateTime.UtcNow - TimeSpan.FromDays(2),
                                     UserId = TestId,
                                     ActualNoteId = TestNote3Id,
+                                    Status = StatusEnum.Historical
                                 },
                                 new Note
                                 {
@@ -107,6 +112,7 @@ namespace NoteMe.Server.Infrastructure.Framework.Generators.Domain
                                     CreatedAt = DateTime.UtcNow - TimeSpan.FromDays(3),
                                     UserId = TestId,
                                     ActualNoteId = TestNote3Id,
+                                    Status = StatusEnum.Historical
                                 }
                             }
                         },
