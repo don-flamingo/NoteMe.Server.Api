@@ -36,6 +36,18 @@ namespace NoteMe.Server.Api.Controllers
             return Ok(updated);
         }
 
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteAsync(Guid id)
+        {
+            var cmd = new DeleteNoteCommand
+            {
+                Id = id
+            };
+
+            await DispatchAsync(cmd);
+            return Ok();
+        }
+
         [HttpGet]
         public async Task<IActionResult> GetAllAsync([FromQuery] GetNotesQuery query)
         {
