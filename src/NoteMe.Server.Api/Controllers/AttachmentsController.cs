@@ -62,10 +62,10 @@ namespace NoteMe.Server.Api.Controllers
         }
         
         [Authorize]
-        [HttpPost("upload/{id}")]
-        public async Task<IActionResult> UploadAsync(Guid id, [FromBody] IFormFile formFile)
+        [HttpPost("upload")]
+        public async Task<IActionResult> UploadAsync([FromForm(Name ="file")] IFormFile formFile)
         {
-            await _cdnService.SaveFileAsync(formFile, id);
+            await _cdnService.SaveFileAsync(formFile);
             return Ok();
         }
         

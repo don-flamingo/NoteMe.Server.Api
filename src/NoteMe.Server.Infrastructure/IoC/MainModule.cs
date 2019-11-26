@@ -1,5 +1,6 @@
 using Autofac;
 using Microsoft.Extensions.Configuration;
+using NoteMe.Server.Infrastructure.Cdn;
 using NoteMe.Server.Infrastructure.Cqrs;
 using NoteMe.Server.Infrastructure.Framework;
 using NoteMe.Server.Infrastructure.Sql;
@@ -20,6 +21,7 @@ namespace NoteMe.Server.Infrastructure.IoC
             builder.RegisterModule(new CqrsModule());
             builder.RegisterModule(new SqlModule(_configuration));
             builder.RegisterModule(new FrameworkModule(_configuration));
+            builder.RegisterModule(new CdnModule(_configuration));
         }
     }
 }

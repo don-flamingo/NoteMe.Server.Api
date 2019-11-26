@@ -6,7 +6,8 @@ namespace NoteMe.Server.Core.Models
 {
     public class Attachment : IIdProvider, 
         IStatusProvider, 
-        INameProvider
+        INameProvider,
+        ICreatedAtProvider
     {
         public Guid Id { get; set; }
         public StatusEnum Status { get; set; }
@@ -15,5 +16,6 @@ namespace NoteMe.Server.Core.Models
         
         public Guid NoteId { get; set; }
         public Note Note { get; set; }
+        public DateTime CreatedAt { get; set; }
     }
 }

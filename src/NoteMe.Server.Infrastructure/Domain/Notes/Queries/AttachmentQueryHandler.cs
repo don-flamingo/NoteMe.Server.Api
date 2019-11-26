@@ -8,6 +8,7 @@ using NoteMe.Server.Core.Models;
 using NoteMe.Server.Infrastructure.Cqrs.Queries;
 using NoteMe.Server.Infrastructure.Framework.Mappers;
 using NoteMe.Server.Infrastructure.Sql;
+using System.Linq;
 
 namespace NoteMe.Server.Infrastructure.Domain.Notes.Queries
 {
@@ -27,6 +28,7 @@ namespace NoteMe.Server.Infrastructure.Domain.Notes.Queries
         public async Task<PaginationDto<AttachmentDto>> HandleAsync(GetAttachmentQuery query)
         {
             var queryable = _context.Attachments
+                .Where(x => x.Note.UserId == query.RequestBy)
                 .Where(query);
 
             var count = await queryable.CountAsync();

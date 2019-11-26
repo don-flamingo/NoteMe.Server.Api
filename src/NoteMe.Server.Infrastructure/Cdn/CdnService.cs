@@ -12,7 +12,7 @@ namespace NoteMe.Server.Infrastructure.Cdn
 {
     public interface ICdnService
     {
-        Task SaveFileAsync(IFormFile formFile, Guid fileId);
+        Task SaveFileAsync(IFormFile formFile);
         Task<String> GetFilePathAsync(Guid id);
     }
     
@@ -29,17 +29,19 @@ namespace NoteMe.Server.Infrastructure.Cdn
             _context = context;
         }
         
-        public async Task SaveFileAsync(IFormFile formFile, Guid fileId)
+        public async Task SaveFileAsync(IFormFile formFile)
         {
-            var file = await _context.Attachments.FirstAsync(x => x.Id == fileId);
-            var fileFullName = GetFileFullName(formFile, fileId, file);
+            var ext = Path.GetExtension(formFile.FileName);
+            var id = Guid.Parse(Path.GetFileNameWithoutExtension(formFile.FileName));
+            var file = await _context.Attachments.FirstAsync(x => x.Id == id);
+            var fileFullName = GetFileFullName(ext, id, file);
             using (var fileStream = new FileStream(fileFullName, FileMode.Create))
             {
                 await formFile.CopyToAsync(fileStream);
             }
         }
         
-        private string GetFileFullName(IFormFile formFile, Guid fileId, Attachment file)
+        private string GetFileFullName(string ext, Guid fileId, Attachment file)
         {
             var dir = Path.Combine(_settings.Path, file.NoteId.ToString());
 
@@ -48,7 +50,7 @@ namespace NoteMe.Server.Infrastructure.Cdn
                 Directory.CreateDirectory(dir);
             }
 
-            var fileFullName = Path.Combine(dir, fileId.ToString() + Path.GetExtension(formFile.Name));
+            var fileFullName = Path.Combine(dir, fileId.ToString() + ext);
             return fileFullName;
         }
 
