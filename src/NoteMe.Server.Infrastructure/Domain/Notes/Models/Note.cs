@@ -12,6 +12,7 @@ namespace NoteMe.Server.Core.Models
     {
         public Guid Id { get; set; }
         public StatusEnum Status { get; set; }
+        public string Tags { get; set; }
         public string Name { get; set; }
         public string Content { get; set; }
         public DateTime CreatedAt { get; set; }
