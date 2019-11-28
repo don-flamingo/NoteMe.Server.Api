@@ -50,7 +50,8 @@ namespace NoteMe.Server.Infrastructure.Domain.Notes.Commands
                 Name = existingNote.Name,
                 Content = existingNote.Content,
                 Latitude = existingNote.Latitude,
-                Status = StatusEnum.Historical
+                Status = StatusEnum.Historical,
+                UserId = existingNote.UserId
             };
 
             await _noteMeContext.AddAsync(oldNote);

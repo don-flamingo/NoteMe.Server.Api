@@ -23,26 +23,14 @@ namespace NoteMe.Server.Infrastructure.Cqrs.Commands
             _context = context;
             _container = container;
         }
-        
+
         public async Task DispatchAsync<TCommand>(TCommand command)
             where TCommand : ICommandProvider
         {
-            using (var transaction = await _context.Database.BeginTransactionAsync())
-            {
-                try
-                {
-                    var handler = _container.Resolve<ICommandHandler<TCommand>>();
-                    await handler.HandleAsync(command);
+            var handler = _container.Resolve<ICommandHandler<TCommand>>();
+            await handler.HandleAsync(command);
 
-                    transaction.Commit();
-                    await _context.SaveChangesAsync();
-                }
-                catch (Exception ex)
-                {
-                    transaction.Rollback();
-                    throw;
-                }
-            }
+            await _context.SaveChangesAsync();
         }
     }
 }
