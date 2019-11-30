@@ -1,8 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
+using NetTopologySuite.Geometries;
 using NoteMe.Common.DataTypes.Enums;
 using NoteMe.Server.Core.Models;
+using NoteMe.Server.Infrastructure.Sql;
 
 namespace NoteMe.Server.Infrastructure.Framework.Generators.Domain
 {
@@ -22,8 +23,9 @@ namespace NoteMe.Server.Infrastructure.Framework.Generators.Domain
         public static Guid TestNote3Hist2Id = new Guid("f89ea9fd-feaf-4423-9833-5aee6e485ef0");
         public static Guid TestNote3Hist3Id = new Guid("b03b7813-5ea1-4fbf-8ea8-b82428f2d77d");
 
-        public static decimal WarsawLat = 52.229675m;
-        public static decimal WarsawLng = 21.012230m;
+        public static double WarsawLat = 52.237049;
+        public static double WarsawLng = 21.017532;
+        public static Point WarsawLocation = NoteMeGeometryFactory.CreatePoint(WarsawLng, WarsawLat);
             
         public ICollection<User> GetDataToSeed()
         {
@@ -45,8 +47,7 @@ namespace NoteMe.Server.Infrastructure.Framework.Generators.Domain
                             Name = "What is Lorem Ipsum?",
                             Content =
                                 "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
-                            Latitude = WarsawLat,
-                            Longitude = WarsawLng,
+                            Location = WarsawLocation,
                             CreatedAt = DateTime.UtcNow,
                             UserId = TestId,
                             Status = StatusEnum.Normal
@@ -57,8 +58,7 @@ namespace NoteMe.Server.Infrastructure.Framework.Generators.Domain
                             Name = "Why do we use it?",
                             Content =
                                 "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).",
-                            Latitude = WarsawLat,
-                            Longitude = WarsawLng,
+                            Location = WarsawLocation,
                             CreatedAt = DateTime.UtcNow,
                             UserId = TestId,
                             Status = StatusEnum.Normal
@@ -69,8 +69,7 @@ namespace NoteMe.Server.Infrastructure.Framework.Generators.Domain
                             Name = "Where can I get some?",
                             Content =
                                 "There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc.",
-                            Latitude = WarsawLat,
-                            Longitude = WarsawLng,
+                            Location = WarsawLocation,
                             CreatedAt = DateTime.UtcNow,
                             UserId = TestId,
                             OldNotes = new List<Note>
@@ -81,8 +80,7 @@ namespace NoteMe.Server.Infrastructure.Framework.Generators.Domain
                                     Name = "Where can I get some? - almost",
                                     Content =
                                         "There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. ",
-                                    Latitude = WarsawLat,
-                                    Longitude = WarsawLng,
+                                    Location = WarsawLocation,
                                     CreatedAt = DateTime.UtcNow - TimeSpan.FromDays(1),
                                     UserId = TestId,
                                     ActualNoteId = TestNote3Id,
@@ -94,8 +92,7 @@ namespace NoteMe.Server.Infrastructure.Framework.Generators.Domain
                                     Name = "Where can I get some? - middle",
                                     Content =
                                         "There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet.",
-                                    Latitude = WarsawLat,
-                                    Longitude = WarsawLng,
+                                    Location = WarsawLocation,
                                     CreatedAt = DateTime.UtcNow - TimeSpan.FromDays(2),
                                     UserId = TestId,
                                     ActualNoteId = TestNote3Id,
@@ -107,8 +104,7 @@ namespace NoteMe.Server.Infrastructure.Framework.Generators.Domain
                                     Name = "Where can I get some? - begin",
                                     Content =
                                         "There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. ",
-                                    Latitude = WarsawLat,
-                                    Longitude = WarsawLng,
+                                    Location = WarsawLocation,
                                     CreatedAt = DateTime.UtcNow - TimeSpan.FromDays(3),
                                     UserId = TestId,
                                     ActualNoteId = TestNote3Id,

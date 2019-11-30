@@ -4,13 +4,14 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using NetTopologySuite.Geometries;
 using NoteMe.Server.Infrastructure.Sql;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
-namespace NoteMe.Server.Infrastructure.Sql.Migrations
+namespace NoteMe.Server.Infrastructure.Sql
 {
     [DbContext(typeof(NoteMeContext))]
-    [Migration("20191115180803_initialize")]
+    [Migration("20191129170132_initialize")]
     partial class initialize
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -26,6 +27,9 @@ namespace NoteMe.Server.Infrastructure.Sql.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Name")
                         .HasColumnType("text");
@@ -61,17 +65,17 @@ namespace NoteMe.Server.Infrastructure.Sql.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<decimal>("Latitude")
-                        .HasColumnType("numeric");
-
-                    b.Property<decimal>("Longitude")
-                        .HasColumnType("numeric");
+                    b.Property<Point>("Location")
+                        .HasColumnType("geometry");
 
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
                     b.Property<int>("Status")
                         .HasColumnType("integer");
+
+                    b.Property<string>("Tags")
+                        .HasColumnType("text");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uuid");

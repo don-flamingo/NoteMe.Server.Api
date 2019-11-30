@@ -26,7 +26,7 @@ namespace NoteMe.Server.Infrastructure.Sql
         
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseNpgsql(_settings.ConnectionString)
+            optionsBuilder.UseNpgsql(_settings.ConnectionString, x => x.UseNetTopologySuite())
                 .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
         }
         

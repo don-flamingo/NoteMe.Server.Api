@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using NetTopologySuite.Geometries;
 using NoteMe.Common.DataTypes.Enums;
 using NoteMe.Common.Domain.Notes.Commands;
 using NoteMe.Common.Domain.Notes.Dto;
@@ -49,7 +50,7 @@ namespace NoteMe.Server.Infrastructure.Domain.Notes.Commands
                 ActualNoteId = existingNote.Id,
                 Name = existingNote.Name,
                 Content = existingNote.Content,
-                Latitude = existingNote.Latitude,
+                Location = existingNote.Location,
                 Status = StatusEnum.Historical,
                 UserId = existingNote.UserId
             };
@@ -58,9 +59,8 @@ namespace NoteMe.Server.Infrastructure.Domain.Notes.Commands
 
             existingNote.Content = command.Content;
             existingNote.Name = command.Name;
-            existingNote.Latitude = command.Latitude;
-            existingNote.Longitude = command.Longitude;
-            
+            existingNote.Location = NoteMeGeometryFactory.CreatePoint( command.Longitude,  command.Latitude);
+
             var noteDto = _mapper.Map<NoteDto>(existingNote);
             _cacheService.Set(noteDto);
         }

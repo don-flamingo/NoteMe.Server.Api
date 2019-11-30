@@ -1,7 +1,8 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
+using NetTopologySuite.Geometries;
 
-namespace NoteMe.Server.Infrastructure.Sql.Migrations
+namespace NoteMe.Server.Infrastructure.Sql
 {
     public partial class initialize : Migration
     {
@@ -31,11 +32,11 @@ namespace NoteMe.Server.Infrastructure.Sql.Migrations
                 {
                     Id = table.Column<Guid>(nullable: false),
                     Status = table.Column<int>(nullable: false),
+                    Tags = table.Column<string>(nullable: true),
                     Name = table.Column<string>(nullable: true),
                     Content = table.Column<string>(nullable: true),
                     CreatedAt = table.Column<DateTime>(nullable: false),
-                    Latitude = table.Column<decimal>(nullable: false),
-                    Longitude = table.Column<decimal>(nullable: false),
+                    Location = table.Column<Point>(nullable: true),
                     ActualNoteId = table.Column<Guid>(nullable: true),
                     UserId = table.Column<Guid>(nullable: false)
                 },
@@ -86,7 +87,8 @@ namespace NoteMe.Server.Infrastructure.Sql.Migrations
                     Status = table.Column<int>(nullable: false),
                     Name = table.Column<string>(nullable: true),
                     Type = table.Column<int>(nullable: false),
-                    NoteId = table.Column<Guid>(nullable: false)
+                    NoteId = table.Column<Guid>(nullable: false),
+                    CreatedAt = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using NetTopologySuite.Geometries;
 using NoteMe.Common.DataTypes.Enums;
 using NoteMe.Common.Providers;
 
@@ -16,9 +17,7 @@ namespace NoteMe.Server.Core.Models
         public string Name { get; set; }
         public string Content { get; set; }
         public DateTime CreatedAt { get; set; }
-        public decimal Latitude { get; set; }
-        public decimal Longitude { get; set; }
-        
+        public Point Location { get; set; }
         public Guid? ActualNoteId { get; set; }
         public Guid UserId { get; set; }
         

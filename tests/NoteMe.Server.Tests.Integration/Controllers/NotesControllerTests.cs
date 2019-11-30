@@ -31,8 +31,8 @@ namespace NoteMe.Server.Tests.Integration.Controllers
                 Id = Guid.NewGuid(),
                 Name = faker.Lorem.Sentence(),
                 Content = faker.Lorem.Paragraph(),
-                Latitude = (decimal) faker.Address.Latitude(),
-                Longitude = (decimal) faker.Address.Longitude()
+                Latitude =  faker.Address.Latitude(),
+                Longitude =  faker.Address.Longitude()
             };
 
             await _backendFixture.LoginAsync(UserSeeder.TestEmail, UserSeeder.TestPassword);

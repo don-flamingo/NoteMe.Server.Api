@@ -3,10 +3,11 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using NetTopologySuite.Geometries;
 using NoteMe.Server.Infrastructure.Sql;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
-namespace NoteMe.Server.Infrastructure.Sql.Migrations
+namespace NoteMe.Server.Infrastructure.Sql
 {
     [DbContext(typeof(NoteMeContext))]
     partial class NoteMeContextModelSnapshot : ModelSnapshot
@@ -62,11 +63,8 @@ namespace NoteMe.Server.Infrastructure.Sql.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<decimal>("Latitude")
-                        .HasColumnType("numeric");
-
-                    b.Property<decimal>("Longitude")
-                        .HasColumnType("numeric");
+                    b.Property<Point>("Location")
+                        .HasColumnType("geometry");
 
                     b.Property<string>("Name")
                         .HasColumnType("text");
