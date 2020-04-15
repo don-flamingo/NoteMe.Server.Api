@@ -58,9 +58,7 @@ namespace NoteMe.Server.Api.Controllers
                 }
             }
         }
-
-
-
+        
         protected TDto GetDto<TDto>(Guid id)
             where TDto : IDtoProvider, IIdProvider
             => _memoryCacheService.Get<TDto>(id);

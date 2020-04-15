@@ -6,7 +6,8 @@ using NoteMe.Server.Infrastructure.Cqrs.Commands;
 
 namespace NoteMe.Server.Infrastructure.Domain.Notes.Commands
 {
-    public class AttachmentCommandHandler : ICommandHandler<CreateAttachmentCommand>,
+    public class AttachmentCommandHandler : 
+        ICommandHandler<CreateAttachmentCommand>,
         ICommandHandler<DeleteAttachmentCommand>
     {
         private readonly IGenericCommandHandler _genericCommandHandler;
