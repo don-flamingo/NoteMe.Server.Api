@@ -11,6 +11,7 @@ namespace NoteMe.Server.Infrastructure.Domain.Users.Mappers
         {
             CreateMap<User, UserDto>();
             CreateMap<UserRegisterCommand, UserDto>();
+            CreateMap<UserRegisterCommand, User>();
             CreateMap<UserMapperProfile, User>();
         }   
     }

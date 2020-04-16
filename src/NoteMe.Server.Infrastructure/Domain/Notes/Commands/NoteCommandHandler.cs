@@ -49,6 +49,7 @@ namespace NoteMe.Server.Infrastructure.Domain.Notes.Commands
                 Id = Guid.NewGuid(),
                 ActualNoteId = existingNote.Id,
                 Name = existingNote.Name,
+                Tags =  existingNote.Tags,
                 Content = existingNote.Content,
                 Location = existingNote.Location,
                 Status = StatusEnum.Historical,
